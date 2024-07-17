@@ -22,6 +22,11 @@ class DataPreparation(DatenLaden):
             # Stelle sicher, dass 'Date' als String vorliegt
             self.data['Date'] = self.data['Date'].astype(str)
 
+            # Korrigiere das Datum für Oktober
+            self.data['Date'] = self.data['Date'].apply(
+                lambda x: x[:-1] + '10' if x.endswith('.1') else x
+            )
+
             # Monatsnamen extrahieren
             self.data['Month'] = self.data['Date'].apply(
                 lambda x: datetime.strptime(x, '%Y.%m').strftime('%b')
