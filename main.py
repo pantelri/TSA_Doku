@@ -11,6 +11,7 @@ def main():
     # Reicher den DataFrame mit weiteren Informationen an
     data_preparation.enrich_dataframe()
     data_preparation.print_dataframe()
+    data_preparation.print_klassenvariablen()
     
 if __name__ == "__main__":
     main()
