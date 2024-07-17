@@ -1,3 +1,5 @@
 input/
 templates/
 *.xlsx
+.aider*
+*.pyc
