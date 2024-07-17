@@ -2,7 +2,7 @@ import openpyxl
 import pandas as pd
 from datetime import datetime
 
-from loaders import DatenLaden
+from data_processing.loaders import DatenLaden
 
 class DataPreparation(DatenLaden):
     def __init__(self):
@@ -19,8 +19,13 @@ class DataPreparation(DatenLaden):
     def enrich_dataframe(self):
         # Anreichern des DataFrames mit zusätzlichen Informationen
         if self.data is not None:
+            # Stelle sicher, dass 'Date' als String vorliegt
+            self.data['Date'] = self.data['Date'].astype(str)
+
             # Monatsnamen extrahieren
-            self.data['Month'] = self.data['Date'].apply(lambda x: datetime.strptime(x, '%Y.%m').strftime('%b'))
+            self.data['Month'] = self.data['Date'].apply(
+                lambda x: datetime.strptime(x, '%Y.%m').strftime('%b') if '.' in x else None
+            )
 
             # Audit Period bestimmen
             audit_period_mapping = {'Q1': 3, 'Q2': 6, 'Q3': 9, 'Q4': 12}
@@ -38,6 +43,7 @@ class DataPreparation(DatenLaden):
 
             self.data['Period'] = self.data['Date'].apply(determine_period)
 
+    
     def fill_excel(self):
         # Fülle die Zellen B28:E63 des Tabs "1. Data Validation" aus
         sheet = self.workbook['1. Data Validation']
