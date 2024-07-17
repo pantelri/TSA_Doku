@@ -24,7 +24,7 @@ class DataPreparation(DatenLaden):
 
             # Monatsnamen extrahieren
             self.data['Month'] = self.data['Date'].apply(
-                lambda x: datetime.strptime(x, '%Y.%m').strftime('%b') if '.' in x else None
+                lambda x: datetime.strptime(x, '%Y.%m').strftime('%b')
             )
 
             # Audit Period bestimmen
