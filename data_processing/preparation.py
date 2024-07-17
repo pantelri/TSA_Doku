@@ -48,6 +48,18 @@ class DataPreparation(DatenLaden):
 
             self.data['Period'] = self.data['Date'].apply(determine_period)
 
+            # Fiscal Year bestimmen
+            def determine_fiscal_year(date, period):
+                year, month = map(int, date.split('.'))
+                if period == 'Audit Period':
+                    fiscal_year = last_year % 100
+                else:
+                    months_difference = (last_year - year) * 12 + (last_month - month)
+                    fiscal_year = (last_year - (months_difference // 12)) % 100
+                return f'FY {fiscal_year:02d}'
+
+            self.data['Fiscal_Year'] = self.data.apply(lambda row: determine_fiscal_year(row['Date'], row['Period']), axis=1)
+
     
     def fill_excel(self):
         # Fülle die Zellen B28:E63 des Tabs "1. Data Validation" aus
