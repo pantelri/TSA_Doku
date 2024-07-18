@@ -89,6 +89,19 @@ class ExcelWriter:
             # Füge zusätzliche Spalten ein
             sheet.insert_cols(18, len(index_columns) - 2)
 
+            # Kopiere die Formatierung von Spalte Q auf die neuen Spalten
+            for col_idx in range(18, 18 + len(index_columns) - 2):
+                for row in sheet.iter_rows(min_row=1, max_row=sheet.max_row, min_col=col_idx, max_col=col_idx):
+                    for cell in row:
+                        cell.font = sheet['Q' + str(cell.row)].font.copy()
+                        cell.border = sheet['Q' + str(cell.row)].border.copy()
+                        cell.fill = sheet['Q' + str(cell.row)].fill.copy()
+                        cell.number_format = sheet['Q' + str(cell.row)].number_format
+                        cell.alignment = sheet['Q' + str(cell.row)].alignment.copy()
+
+            # Setze die Breite der Spalte S gleich der Breite von Spalte Q
+            sheet.column_dimensions['S'].width = sheet.column_dimensions['Q'].width
+
         # Fülle die Zellen Q27:R27 (oder mehr) und die Spalten darunter
         for idx, col in enumerate(index_columns):
             cell = get_column_letter(17 + idx)  # Q, R, ...
