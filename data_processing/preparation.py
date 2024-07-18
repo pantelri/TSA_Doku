@@ -67,13 +67,18 @@ class DataPreparation(DatenLaden):
             self.data = self.data.sort_values('Date')
 
     def write_to_excel_template(self):
+        # Erstelle den Output-Ordner, falls er nicht existiert
+        output_dir = os.path.join(os.getcwd(), 'output')
+        os.makedirs(output_dir, exist_ok=True)
+
         # Kopiere das Template
         template_path = os.path.join('templates', 'SAP_TSA_Template.xlsx')
         output_filename = f"{self.gesellschaft}_{self.account}_{self.jahr}_TSA_Doku.xlsx"
-        shutil.copy(template_path, output_filename)
+        output_path = os.path.join(output_dir, output_filename)
+        shutil.copy(template_path, output_path)
 
         # Lade die kopierte Arbeitsmappe
-        workbook = load_workbook(output_filename)
+        workbook = load_workbook(output_path)
         sheet = workbook['1. Data Validation']
 
         # Schreibe die Daten in die Excel-Datei
@@ -84,8 +89,8 @@ class DataPreparation(DatenLaden):
             sheet[f'E{i}'] = row.Period
 
         # Speichere die Änderungen
-        workbook.save(output_filename)
-        print(f"Excel-Datei wurde erstellt: {output_filename}")
+        workbook.save(output_path)
+        print(f"Excel-Datei wurde erstellt: {output_path}")
 
         # Speichere alle Spaltenüberschriften
         self.spaltenueberschriften = self.data.columns.tolist()
