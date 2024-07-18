@@ -1,0 +1,67 @@
+import os
+import shutil
+from openpyxl import load_workbook
+
+class ExcelWriter:
+    def __init__(self, data_preparation):
+        self.gesellschaft = data_preparation.gesellschaft
+        self.account = data_preparation.account
+        self.account_name = data_preparation.account_name
+        self.jahr = data_preparation.jahr
+        self.quartal = data_preparation.quartal
+        self.spaltenueberschriften = data_preparation.spaltenueberschriften
+        self.data = data_preparation.data
+
+    def write_to_excel_template(self):
+        # Erstelle den Output-Ordner, falls er nicht existiert
+        output_dir = os.path.join(os.getcwd(), 'output')
+        os.makedirs(output_dir, exist_ok=True)
+
+        # Kopiere das Template
+        template_path = os.path.join('templates', 'SAP_TSA_Template.xlsx')
+        output_filename = f"{self.gesellschaft}_{self.account}_{self.jahr}_TSA_Doku.xlsx"
+        output_path = os.path.join(output_dir, output_filename)
+        shutil.copy(template_path, output_path)
+
+        # Lade die kopierte Arbeitsmappe
+        workbook = load_workbook(output_path)
+        sheet = workbook['1. Data Validation']
+
+        # Schreibe die Daten in die Excel-Datei
+        for i, row in enumerate(self.data.itertuples(), start=28):
+            sheet[f'B{i}'] = row.Date
+            sheet[f'C{i}'] = row.Month
+            sheet[f'D{i}'] = row.Fiscal_Year
+            sheet[f'E{i}'] = row.Period
+
+        # Fülle G27 mit dem Wert aus self.account + " total"
+        sheet['G27'] = f"{self.account} total"
+
+        # Finde die Spalte, die "_total" enthält
+        total_column = next((col for col in self.data.columns if '_total' in col), None)
+
+        if total_column:
+            # Fülle G28 und darunter mit den Werten aus der "_total" Spalte
+            for i, value in enumerate(self.data[total_column], start=28):
+                sheet[f'G{i}'] = value
+
+            # Finde alle Spalten mit "{self.account_name}_subtotal" im Namen
+            subtotal_columns = [col for col in self.data.columns if f"{self.account_name}_subtotal" in col]
+
+            # Überprüfe, ob es mehr als drei Subtotal-Spalten gibt
+            if len(subtotal_columns) > 3:
+                raise ValueError("Doku-Template wird bisher nur für max. 3 Subtotal-Spalten des Accounts_to_audit unterstützt")
+
+            # Fülle die Zellen H27:J27 und die Spalten darunter
+            for idx, col in enumerate(subtotal_columns):
+                cell = chr(ord('H') + idx)  # H, I, J
+                suffix = col.split(f"{self.account_name}_subtotal_")[-1]
+                sheet[f'{cell}27'] = f"{self.account} {suffix}"
+
+                # Fülle die Spalte darunter
+                for i, value in enumerate(self.data[col], start=28):
+                    sheet[f'{cell}{i}'] = value
+
+        # Speichere die Änderungen
+        workbook.save(output_path)
+        print(f"Excel-Datei wurde erstellt: {output_path}")
