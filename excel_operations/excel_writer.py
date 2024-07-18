@@ -81,6 +81,24 @@ class ExcelWriter:
             for i, value in enumerate(self.data[col], start=28):
                 sheet[f'{cell}{i}'] = value
 
+        # Finde alle Spalten mit "index_" im Namen
+        index_columns = [col for col in self.data.columns if 'index_' in col]
+
+        # Überprüfe, ob es mehr als zwei Index-Spalten gibt
+        if len(index_columns) > 2:
+            # Füge zusätzliche Spalten ein
+            sheet.insert_cols(18, len(index_columns) - 2)
+
+        # Fülle die Zellen Q27:R27 (oder mehr) und die Spalten darunter
+        for idx, col in enumerate(index_columns):
+            cell = get_column_letter(17 + idx)  # Q, R, ...
+            header = f"price {col.replace('_', ' ')}"
+            sheet[f'{cell}27'] = header
+
+            # Fülle die Spalte darunter
+            for i, value in enumerate(self.data[col], start=28):
+                sheet[f'{cell}{i}'] = value
+
         # Speichere die Änderungen
         workbook.save(output_path)
         print(f"Excel-Datei wurde erstellt: {output_path}")
