@@ -60,14 +60,6 @@ class DataPreparation(DatenLaden):
 
             self.data['Fiscal_Year'] = self.data.apply(lambda row: determine_fiscal_year(row['Date'], row['Period']), axis=1)
 
-    
-    def fill_excel(self):
-        # Fülle die Zellen B28:E63 des Tabs "1. Data Validation" aus
-        sheet = self.workbook['1. Data Validation']
-        for index, row in self.data.iterrows():
-            # Hier müsste die Logik zum Befüllen der Zellen stehen
-            # Beispiel: sheet.cell(row=28 + index, column=2, value=row['Month'])
-            pass
+            # Speichere alle Spaltenüberschriften
+            self.spaltenueberschriften = self.data.columns.tolist()
 
-        # Speichere die Änderungen in der Arbeitskopie
-        self.workbook.save('working_copy.xlsx')
