@@ -102,3 +102,21 @@ class ExcelWriter:
         # Speichere die Änderungen
         workbook.save(output_path)
         print(f"Excel-Datei wurde erstellt: {output_path}")
+
+        # Prüfe und gib nicht geschriebene Spalten aus
+        self.print_unwritten_columns()
+
+    def print_unwritten_columns(self):
+        written_columns = {'Date', 'Month', 'Fiscal_Year', 'Period'}
+        written_columns.update(col for col in self.data.columns if '_total' in col)
+        written_columns.update(col for col in self.data.columns if f"{self.account_name}_subtotal" in col)
+        written_columns.update(col for col in self.data.columns if 'Volume' in col)
+        written_columns.update(col for col in self.data.columns if 'index_' in col)
+
+        unwritten_columns = set(self.data.columns) - written_columns
+        if unwritten_columns:
+            print("Folgende Spalten wurden nicht in die Excel-Datei geschrieben:")
+            for col in unwritten_columns:
+                print(f"- {col}")
+        else:
+            print("Alle Spalten des DataFrames wurden in die Excel-Datei geschrieben.")
