@@ -88,6 +88,17 @@ class DataPreparation(DatenLaden):
             sheet[f'D{i}'] = row.Fiscal_Year
             sheet[f'E{i}'] = row.Period
 
+        # Fülle G27 mit dem Wert aus self.account + " total"
+        sheet['G27'] = f"{self.account} total"
+
+        # Finde die Spalte, die "_total" enthält
+        total_column = next((col for col in self.data.columns if '_total' in col), None)
+
+        if total_column:
+            # Fülle G28 und darunter mit den Werten aus der "_total" Spalte
+            for i, value in enumerate(self.data[total_column], start=28):
+                sheet[f'G{i}'] = value
+
         # Speichere die Änderungen
         workbook.save(output_path)
         print(f"Excel-Datei wurde erstellt: {output_path}")
