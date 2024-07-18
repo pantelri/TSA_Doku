@@ -60,6 +60,30 @@ class DataPreparation(DatenLaden):
 
             self.data['Fiscal_Year'] = self.data.apply(lambda row: determine_fiscal_year(row['Date'], row['Period']), axis=1)
 
+            # Sortiere den DataFrame nach dem Datum
+            self.data = self.data.sort_values('Date')
+
+    def write_to_excel_template(self):
+        # Kopiere das Template
+        template_path = os.path.join('templates', 'SAP_TSA_Template.xlsx')
+        output_filename = f"{self.gesellschaft}_{self.account}_{self.jahr}_TSA_Doku.xlsx"
+        shutil.copy(template_path, output_filename)
+
+        # Lade die kopierte Arbeitsmappe
+        workbook = load_workbook(output_filename)
+        sheet = workbook['1. Data Validation']
+
+        # Schreibe die Daten in die Excel-Datei
+        for i, row in enumerate(self.data.itertuples(), start=28):
+            sheet[f'B{i}'] = row.Date
+            sheet[f'C{i}'] = row.Month
+            sheet[f'D{i}'] = row.Fiscal_Year
+            sheet[f'E{i}'] = row.Period
+
+        # Speichere die Änderungen
+        workbook.save(output_filename)
+        print(f"Excel-Datei wurde erstellt: {output_filename}")
+
             # Speichere alle Spaltenüberschriften
             self.spaltenueberschriften = self.data.columns.tolist()
 
