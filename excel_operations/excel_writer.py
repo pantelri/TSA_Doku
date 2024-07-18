@@ -1,6 +1,7 @@
 import os
 import shutil
 from openpyxl import load_workbook
+from openpyxl.utils import get_column_letter
 
 class ExcelWriter:
     def __init__(self, data_preparation):
@@ -61,6 +62,24 @@ class ExcelWriter:
                 # Fülle die Spalte darunter
                 for i, value in enumerate(self.data[col], start=28):
                     sheet[f'{cell}{i}'] = value
+
+        # Finde alle Spalten mit "Volume" im Namen
+        volume_columns = [col for col in self.data.columns if 'Volume' in col]
+
+        # Überprüfe, ob es mehr als drei Volume-Spalten gibt
+        if len(volume_columns) > 3:
+            # Füge zusätzliche Spalten ein
+            sheet.insert_cols(15, len(volume_columns) - 3)
+
+        # Fülle die Zellen M27:O27 (oder mehr) und die Spalten darunter
+        for idx, col in enumerate(volume_columns):
+            cell = get_column_letter(13 + idx)  # M, N, O, ...
+            header = col.replace('_', ' ')
+            sheet[f'{cell}27'] = header
+
+            # Fülle die Spalte darunter
+            for i, value in enumerate(self.data[col], start=28):
+                sheet[f'{cell}{i}'] = value
 
         # Speichere die Änderungen
         workbook.save(output_path)
