@@ -112,6 +112,9 @@ class ExcelWriter:
             for i, value in enumerate(self.data[col], start=28):
                 sheet[f'{cell}{i}'] = value
 
+        # Entferne leere Spalten
+        self.remove_empty_columns(sheet)
+
         # Speichere die Änderungen
         workbook.save(output_path)
         print(f"Excel-Datei wurde erstellt: {output_path}")
@@ -133,3 +136,9 @@ class ExcelWriter:
                 print(f"- {col}")
         else:
             print("Alle Spalten des DataFrames wurden in die Excel-Datei geschrieben.")
+
+    def remove_empty_columns(self, sheet):
+        for col_idx in range(ord('Q') - ord('A'), ord('G') - ord('A'), -1):
+            col_letter = chr(ord('A') + col_idx)
+            if sheet[f'{col_letter}27'].value is None:
+                sheet.delete_cols(col_idx + 1)
