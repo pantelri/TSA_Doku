@@ -87,6 +87,6 @@ class DataPreparation(DatenLaden):
         workbook.save(output_filename)
         print(f"Excel-Datei wurde erstellt: {output_filename}")
 
-            # Speichere alle Spaltenüberschriften
-            self.spaltenueberschriften = self.data.columns.tolist()
+        # Speichere alle Spaltenüberschriften
+        self.spaltenueberschriften = self.data.columns.tolist()
 
