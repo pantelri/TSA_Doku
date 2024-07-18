@@ -99,6 +99,26 @@ class DataPreparation(DatenLaden):
             for i, value in enumerate(self.data[total_column], start=28):
                 sheet[f'G{i}'] = value
 
+            # Speichere den Teil des Spaltennamens vor "_total" als self.account_name
+            self.account_name = total_column.split('_total')[0]
+
+            # Finde alle Spalten mit "{self.account_name}_subtotal" im Namen
+            subtotal_columns = [col for col in self.data.columns if f"{self.account_name}_subtotal" in col]
+
+            # Überprüfe, ob es mehr als drei Subtotal-Spalten gibt
+            if len(subtotal_columns) > 3:
+                raise ValueError("Doku-Template wird bisher nur für max. 3 Subtotal-Spalten des Accounts_to_audit unterstützt")
+
+            # Fülle die Zellen H27:J27 und die Spalten darunter
+            for idx, col in enumerate(subtotal_columns):
+                cell = chr(ord('H') + idx)  # H, I, J
+                suffix = col.split(f"{self.account_name}_subtotal_")[-1]
+                sheet[f'{cell}27'] = f"{self.account} {suffix}"
+
+                # Fülle die Spalte darunter
+                for i, value in enumerate(self.data[col], start=28):
+                    sheet[f'{cell}{i}'] = value
+
         # Speichere die Änderungen
         workbook.save(output_path)
         print(f"Excel-Datei wurde erstellt: {output_path}")
