@@ -1,0 +1,12 @@
+name: daten-projekt
+channels:
+  - defaults
+  - conda-forge
+dependencies:
+  - python=3.9
+  - pandas
+  - openpyxl
+  - numpy
+  - pip
+  - pip:
+    - xlsxwriter
