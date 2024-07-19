@@ -12,20 +12,22 @@ class ExcelWriter:
         self.quartal = data_preparation.quartal
         self.spaltenueberschriften = data_preparation.spaltenueberschriften
         self.data = data_preparation.data
-
-    def write_to_excel_template(self):
+        
         # Erstelle den Output-Ordner, falls er nicht existiert
         output_dir = os.path.join(os.getcwd(), 'output')
         os.makedirs(output_dir, exist_ok=True)
+        
+        # Setze den output_path als Klassenvariable
+        output_filename = f"{self.gesellschaft}_{self.account}_{self.jahr}_TSA_Doku.xlsx"
+        self.output_path = os.path.join(output_dir, output_filename)
 
+    def write_to_excel_template(self):
         # Kopiere das Template
         template_path = os.path.join('templates', 'SAP_TSA_Template.xlsx')
-        output_filename = f"{self.gesellschaft}_{self.account}_{self.jahr}_TSA_Doku.xlsx"
-        output_path = os.path.join(output_dir, output_filename)
-        shutil.copy(template_path, output_path)
+        shutil.copy(template_path, self.output_path)
 
         # Lade die kopierte Arbeitsmappe
-        workbook = load_workbook(output_path)
+        workbook = load_workbook(self.output_path)
         sheet = workbook['1. Data Validation']
 
         # Schreibe die Daten in die Excel-Datei
@@ -116,8 +118,8 @@ class ExcelWriter:
         self.remove_empty_columns(sheet)
 
         # Speichere die Änderungen
-        workbook.save(output_path)
-        print(f"Excel-Datei wurde erstellt: {output_path}")
+        workbook.save(self.output_path)
+        print(f"Excel-Datei wurde erstellt: {self.output_path}")
 
         # Prüfe und gib nicht geschriebene Spalten aus
         self.print_unwritten_columns()
