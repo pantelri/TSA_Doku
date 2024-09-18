@@ -49,9 +49,19 @@ def write_index_data(sheet, data):
                     cell.number_format = sheet['Q' + str(cell.row)].number_format
                     cell.alignment = sheet['Q' + str(cell.row)].alignment.copy()
         sheet.column_dimensions['S'].width = sheet.column_dimensions['Q'].width
+    
+    last_index_column = None
     for idx, col in enumerate(index_columns):
         cell = get_column_letter(17 + idx)  # Q, R, ...
+        last_index_column = cell
         header = f"price {col.replace('_', ' ')}"
         sheet[f'{cell}27'] = header
         for i, value in enumerate(data[col], start=28):
             sheet[f'{cell}{i}'] = value
+    
+    # Lösche alle Spalten rechts von der letzten index_data Spalte
+    if last_index_column:
+        last_column_index = sheet.max_column
+        columns_to_delete = last_column_index - ord(last_index_column) + ord('A')
+        if columns_to_delete > 0:
+            sheet.delete_cols(ord(last_index_column) - ord('A') + 2, columns_to_delete)
