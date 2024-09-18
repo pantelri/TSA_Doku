@@ -1,4 +1,4 @@
-name: daten-projekt
+name: tsa-doku
 channels:
   - defaults
   - conda-forge
