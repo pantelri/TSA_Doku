@@ -51,9 +51,16 @@ class ExcelWriter:
     def finalize_workbook(self, workbook, sheet):
         self.remove_empty_columns(sheet)
         self.check_and_remove_empty_columns(sheet)
+        self.remove_conditional_formatting(sheet)
         workbook.save(self.output_path)
         print(f"Excel-Datei wurde erstellt: {self.output_path}")
         self.print_unwritten_columns()
+
+    def remove_conditional_formatting(self, sheet):
+        for col in ['P', 'Q', 'R']:
+            for row in range(1, sheet.max_row + 1):
+                cell = sheet[f'{col}{row}']
+                cell.style = 'Normal'
 
     def check_and_remove_empty_columns(self, sheet):
         for col_idx in range(ord('J') - ord('A'), ord('P') - ord('A')):
