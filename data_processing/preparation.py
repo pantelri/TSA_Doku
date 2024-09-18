@@ -15,7 +15,7 @@ class DataPreparation(DatenLaden):
             # Stelle sicher, dass 'Date' als String vorliegt
             self.data['Date'] = self.data['Date'].astype(str)
 
-            # Korrigiere das Datum für Oktober
+            # Korrigiere das Datum für Oktober -> Sonst wird Oktober als Januar behandelt
             self.data['Date'] = self.data['Date'].apply(
                 lambda x: x[:-1] + '10' if x.endswith('.1') else x
             )
