@@ -50,9 +50,22 @@ class ExcelWriter:
 
     def finalize_workbook(self, workbook, sheet):
         self.remove_empty_columns(sheet)
+        self.check_and_remove_empty_columns(sheet)
         workbook.save(self.output_path)
         print(f"Excel-Datei wurde erstellt: {self.output_path}")
         self.print_unwritten_columns()
+
+    def check_and_remove_empty_columns(self, sheet):
+        for col_idx in range(ord('J') - ord('A'), ord('P') - ord('A')):
+            col_letter = chr(ord('A') + col_idx)
+            if all(sheet[f'{col_letter}{row}'].value is None for row in range(28, 64)):
+                sheet[f'{col_letter}27'].value = None
+                sheet.delete_cols(col_idx + 1)
+                # Verschiebe alle Zellen rechts davon um eine Spalte nach links
+                for row in sheet.iter_rows(min_row=27, max_row=63, min_col=col_idx + 2):
+                    for cell in row:
+                        sheet.cell(row=cell.row, column=cell.column - 1, value=cell.value)
+                sheet.delete_cols(sheet.max_column)
 
     def print_unwritten_columns(self):
         written_columns = {'Date', 'Month', 'Fiscal_Year', 'Period'}
