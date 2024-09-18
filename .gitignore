@@ -3,3 +3,4 @@ templates/
 *.xlsx
 .aider*
 *.pyc
+condaenv.*
