@@ -38,9 +38,11 @@ class PlanningWriter:
 
     def write_data_to_planning_sheet(self):
         # Daten aus Spalte G und B in den Planning-Sheet schreiben
-        for i, (date, value) in enumerate(zip(self.data_validation_sheet['B28:B63'], self.data_validation_sheet['G28:G63']), start=14):
-            self.planning_sheet.cell(row=i, column=1, value=date.value)
-            self.planning_sheet.cell(row=i, column=2, value=value.value)
+        for i, row in enumerate(range(28, 64), start=14):
+            date = self.data_validation_sheet.cell(row=row, column=2).value
+            value = self.data_validation_sheet.cell(row=row, column=7).value
+            self.planning_sheet.cell(row=i, column=1, value=date)
+            self.planning_sheet.cell(row=i, column=2, value=value)
 
             # Farbliche Hervorhebung der letzten 12 Werte
             if i >= 38:  # Die letzten 12 Zeilen (52-63 im Originalsheet)
