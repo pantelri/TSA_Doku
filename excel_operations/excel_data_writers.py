@@ -25,6 +25,22 @@ def write_subtotal_data(sheet, data, account, account_name):
         for i, value in enumerate(data[col], start=28):
             sheet[f'{cell}{i}'] = value
 
+def write_cos_data(sheet, data):
+    cos_columns = [col for col in data.columns if col.startswith("COS")]
+    if cos_columns:
+        last_subtotal_col = chr(ord('H') + len([col for col in data.columns if "_subtotal" in col]) - 1)
+        start_col = chr(ord(last_subtotal_col) + 1)
+        
+        if len(cos_columns) > 1:
+            sheet.insert_cols(ord(start_col) - ord('A') + 1, len(cos_columns) - 1)
+        
+        for idx, col in enumerate(cos_columns):
+            cell = chr(ord(start_col) + idx)
+            header = col.replace('_', ' ')
+            sheet[f'{cell}27'] = header
+            for i, value in enumerate(data[col], start=28):
+                sheet[f'{cell}{i}'] = value
+
 def write_volume_data(sheet, data):
     volume_columns = [col for col in data.columns if 'Volume' in col]
     if len(volume_columns) > 3:
