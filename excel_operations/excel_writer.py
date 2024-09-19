@@ -69,7 +69,7 @@ class ExcelWriter:
 
     def remove_duplicate_columns(self, sheet):
         values = {}
-        for col in range(1, sheet.max_column + 1):
+        for col in range(6, sheet.max_column + 1):
             value = sheet.cell(row=27, column=col).value
             if value in values:
                 # Lösche die gesamte Spalte des zweiten Wertes
