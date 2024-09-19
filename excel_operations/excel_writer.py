@@ -5,6 +5,7 @@ from excel_operations.excel_data_writers import (
     write_basic_data,
     write_total_data,
     write_subtotal_data,
+    write_cos_data,
     write_volume_data,
     write_index_data
 )
@@ -33,6 +34,7 @@ class ExcelWriter:
         write_basic_data(sheet, self.data)
         write_total_data(sheet, self.data, self.account)
         write_subtotal_data(sheet, self.data, self.account, self.account_name)
+        write_cos_data(sheet, self.data)
         write_volume_data(sheet, self.data)
         write_index_data(sheet, self.data)
         
