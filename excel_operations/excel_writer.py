@@ -49,7 +49,6 @@ class ExcelWriter:
         return workbook, sheet
 
     def finalize_workbook(self, workbook, sheet):
-        self.remove_empty_columns(sheet)
         self.check_and_remove_empty_columns(sheet)
         workbook.save(self.output_path)
         print(f"Excel-Datei wurde erstellt: {self.output_path}")
@@ -83,8 +82,3 @@ class ExcelWriter:
         else:
             print("Alle Spalten des DataFrames wurden in die Excel-Datei geschrieben.")
 
-    def remove_empty_columns(self, sheet):
-        for col_idx in range(ord('Q') - ord('A'), ord('G') - ord('A'), -1):
-            col_letter = chr(ord('A') + col_idx)
-            if sheet[f'{col_letter}27'].value is None:
-                sheet.delete_cols(col_idx + 1)
