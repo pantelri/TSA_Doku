@@ -1,4 +1,3 @@
-import openpyxl
 from openpyxl.chart import BarChart, Reference
 from openpyxl.styles import PatternFill
 from openpyxl.chart import BarChart, Reference

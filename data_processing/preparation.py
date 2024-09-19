@@ -2,7 +2,6 @@ import pandas as pd
 from datetime import datetime
 
 from data_processing.loaders import DatenLaden
-from excel_operations.excel_writer import ExcelWriter
 
 class DataPreparation(DatenLaden):
     def __init__(self):
@@ -63,5 +62,3 @@ class DataPreparation(DatenLaden):
             total_column = next((col for col in self.data.columns if '_total' in col), None)
             if total_column:
                 self.account_name = total_column.split('_total')[0]
-
-
