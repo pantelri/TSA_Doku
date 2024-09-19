@@ -2,7 +2,7 @@ import openpyxl
 from openpyxl.chart import BarChart, Reference
 from openpyxl.styles import PatternFill
 from openpyxl.chart import BarChart, Reference
-from openpyxl.drawing.colors import ColorChoice
+from openpyxl.drawing.colors import ColorChoice, RGBPercent
 from openpyxl.chart.shapes import GraphicalProperties
 
 class PlanningWriter:
@@ -29,12 +29,12 @@ class PlanningWriter:
         # Farben für die Balken festlegen
         series = chart.series[0]
         series.graphicalProperties = GraphicalProperties()
-        series.graphicalProperties.solidFill = ColorChoice(rgb="4F81BD")  # Blaue Farbe für die ersten 24 Balken
+        series.graphicalProperties.solidFill = ColorChoice(srgbClr=RGBPercent(31, 51, 74))  # Blaue Farbe für die ersten 24 Balken
 
         # Die letzten 12 Balken rot färben
         for i in range(24, 36):
             pt = GraphicalProperties()
-            pt.solidFill = ColorChoice(rgb="C0504D")  # Rote Farbe für die letzten 12 Balken
+            pt.solidFill = ColorChoice(srgbClr=RGBPercent(75, 31, 30))  # Rote Farbe für die letzten 12 Balken
             series.dPt.append(pt)
 
         # Diagramm zum Arbeitsblatt hinzufügen
