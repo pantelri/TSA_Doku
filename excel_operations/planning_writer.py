@@ -23,12 +23,16 @@ class PlanningWriter:
         chart.add_data(data, titles_from_data=True)
         chart.set_categories(cats)
 
-        # Farben für die Balken festlegen
         series = chart.series[0]
-        series.graphicalProperties.solidFill = "4F81BD"  # Blaue Farbe für die ersten 24 Balken
-        for i in range(24, 36):  # Die letzten 12 Balken rot färben
-            pt = series.dPt(i)
-            pt.graphicalProperties.solidFill = "C0504D"  # Rote Farbe für die letzten 12 Balken
+        fill = PatternFill(start_color="4F81BD", end_color="4F81BD", fill_type="solid")
+        series.graphicalProperties.solidFill = fill
+        
+        # Setzen Sie die Farben für die einzelnen Datenpunkte
+        for i in range(len(series.dPt)):
+            if i >= 24:
+                pt = series.dPt[i]  # Verwenden Sie den Index-Zugriff anstelle eines Aufrufs
+                fill = PatternFill(start_color="C0504D", end_color="C0504D", fill_type="solid")
+                pt.graphicalProperties.solidFill = fill
 
         # Diagramm zum Arbeitsblatt hinzufügen
         self.planning_sheet.add_chart(chart, "B13")
