@@ -56,7 +56,20 @@ class ExcelWriter:
         workbook.save(self.output_path)
 
     def check_and_remove_empty_columns(self, sheet):
-        for col_idx in range(ord('J') - ord('A'), ord('P') - ord('A')):
+        # Finde den am weitesten rechts stehenden Wert in Zeile 27
+        rightmost_col = 0
+        for col in range(1, sheet.max_column + 1):
+            if sheet.cell(row=27, column=col).value is not None:
+                rightmost_col = col
+
+        # Lösche 10 Spalten rechts vom am weitesten rechts stehenden Wert
+        if rightmost_col > 0:
+            delete_start = rightmost_col + 1
+            delete_end = min(delete_start + 10, sheet.max_column)
+            sheet.delete_cols(delete_start, delete_end - delete_start + 1)
+
+        # Überprüfe und entferne leere Spalten wie zuvor
+        for col_idx in range(ord('J') - ord('A'), sheet.max_column):
             col_letter = chr(ord('A') + col_idx)
             if all(sheet[f'{col_letter}{row}'].value is None for row in range(28, 64)):
                 sheet[f'{col_letter}27'].value = None
