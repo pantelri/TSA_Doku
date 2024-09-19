@@ -10,6 +10,7 @@ from excel_operations.excel_data_writers import (
     write_volume_data,
     write_index_data
 )
+from excel_operations.planning_writer import PlanningWriter
 
 class ExcelWriter:
     def __init__(self, data_preparation):
@@ -57,6 +58,10 @@ class ExcelWriter:
         self.adjust_row_6(sheet)
         self.calculate_sums_and_averages(sheet)
         workbook.save(self.output_path)
+        
+        # Erstellen und Verarbeiten des PlanningWriter
+        planning_writer = PlanningWriter(self.output_path)
+        planning_writer.process()
 
     def adjust_row_6(self, sheet):
         for col in range(7, sheet.max_column + 1):  # Start from column G
