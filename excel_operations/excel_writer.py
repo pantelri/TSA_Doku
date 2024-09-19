@@ -52,6 +52,7 @@ class ExcelWriter:
 
     def finalize_workbook(self, workbook, sheet):
         self.check_and_remove_empty_columns(sheet)
+        self.remove_duplicate_columns(sheet)
         workbook.save(self.output_path)
 
     def check_and_remove_empty_columns(self, sheet):
@@ -65,6 +66,16 @@ class ExcelWriter:
                     for cell in row:
                         sheet.cell(row=cell.row, column=cell.column - 1, value=cell.value)
                 sheet.delete_cols(sheet.max_column)
+
+    def remove_duplicate_columns(self, sheet):
+        values = {}
+        for col in range(1, sheet.max_column + 1):
+            value = sheet.cell(row=27, column=col).value
+            if value in values:
+                # Lösche die gesamte Spalte des zweiten Wertes
+                sheet.delete_cols(col)
+            else:
+                values[value] = col
 
     def print_unwritten_columns(self):
         written_columns = {'Date', 'Month', 'Fiscal_Year', 'Period'}
