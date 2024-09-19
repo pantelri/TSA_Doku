@@ -13,6 +13,8 @@ def main():
 
     excel_writer = ExcelWriter(data_preparation)
     excel_writer.write_to_excel_template()
+    print(f"Excel-Datei wurde im output-Ordner erstellt")
+    excel_writer.print_unwritten_columns()
 
     summary_writer = SummaryWriter(data_preparation, excel_writer)
     summary_writer.write_summary()

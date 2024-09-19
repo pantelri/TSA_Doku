@@ -51,9 +51,6 @@ class ExcelWriter:
     def finalize_workbook(self, workbook, sheet):
         self.check_and_remove_empty_columns(sheet)
         workbook.save(self.output_path)
-        print(f"Excel-Datei wurde erstellt: {self.output_path}")
-        self.print_unwritten_columns()
-
 
     def check_and_remove_empty_columns(self, sheet):
         for col_idx in range(ord('J') - ord('A'), ord('P') - ord('A')):
