@@ -5,11 +5,14 @@ from openpyxl.chart import BarChart, Reference
 from openpyxl.drawing.colors import ColorChoice, RGBPercent
 from openpyxl.chart.shapes import GraphicalProperties
 
-class PlanningWriter:
-    def __init__(self, workbook_path):
-        self.workbook = openpyxl.load_workbook(workbook_path)
-        self.data_validation_sheet = self.workbook['1. Data Validation']
-        self.planning_sheet = self.workbook['2.1 SAP Planning']
+from excel_operations.excel_writer import ExcelWriter
+
+class Planning(ExcelWriter):
+    def __init__(self):
+        super().__init__()
+
+    def fill_worksheet(self):
+        pass
 
     def create_column_chart(self):
         # Erstellen des Diagramms
