@@ -9,10 +9,6 @@ class PlanningWriter:
         self.planning_sheet = self.workbook['2.1 SAP Planning']
 
     def create_column_chart(self):
-        # Daten aus Spalte G und B extrahieren
-        dates = [cell.value for cell in self.data_validation_sheet['B28:B63']]
-        values = [cell.value for cell in self.data_validation_sheet['G28:G63']]
-
         # Erstellen des Diagramms
         chart = BarChart()
         chart.type = "col"
@@ -30,8 +26,9 @@ class PlanningWriter:
         # Farben für die Balken festlegen
         series = chart.series[0]
         series.graphicalProperties.solidFill = "4F81BD"  # Blaue Farbe für die ersten 24 Balken
-        pt = series.dPt(24)  # Index 24 entspricht dem 25. Balken (0-basierter Index)
-        pt.graphicalProperties.solidFill = "C0504D"  # Rote Farbe für die letzten 12 Balken
+        for i in range(24, 36):  # Die letzten 12 Balken rot färben
+            pt = series.dPt(i)
+            pt.graphicalProperties.solidFill = "C0504D"  # Rote Farbe für die letzten 12 Balken
 
         # Diagramm zum Arbeitsblatt hinzufügen
         self.planning_sheet.add_chart(chart, "B13")
