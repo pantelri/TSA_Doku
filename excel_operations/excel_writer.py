@@ -55,61 +55,23 @@ class ExcelWriter:
     def finalize_workbook(self, workbook, sheet):
         self.check_and_remove_empty_columns(sheet)
         self.remove_duplicate_columns(sheet)
-        self.adjust_row_6(sheet)
-        self.calculate_sums_and_averages(sheet)
         workbook.save(self.output_path)
-        
-        # Erstellen und Verarbeiten des PlanningWriter
-        planning_writer = PlanningWriter(self.output_path)
-        planning_writer.process()
-
-    def adjust_row_6(self, sheet):
-        for col in range(7, sheet.max_column + 1):  # Start from column G
-            sheet.cell(row=6, column=col).value = sheet.cell(row=27, column=col).value
-
-    def calculate_sums_and_averages(self, sheet):
-        for col in range(7, sheet.max_column + 1):  # Start from column G
-            header = sheet.cell(row=27, column=col).value
-            is_price_index = "price index" in str(header).lower() if header else False
-
-            for row, (start, end) in zip([7, 11, 15], [(28, 39), (40, 51), (52, 63)]):
-                values = [sheet.cell(row=r, column=col).value for r in range(start, end + 1)]
-                values = [v for v in values if v is not None]  # Remove None values
-
-                if values:
-                    if is_price_index:
-                        result = np.mean(values)
-                    else:
-                        result = sum(values)
-
-                    sheet.cell(row=row, column=col).value = result
 
     def check_and_remove_empty_columns(self, sheet):
-        # Finde den am weitesten rechts stehenden Wert in den Zeilen 27 bis 63
-        rightmost_col = 0
-        for col in range(1, sheet.max_column + 1):
-            if any(sheet.cell(row=row, column=col).value is not None for row in range(27, 64)):
-                rightmost_col = col
-
-        # Lösche Spalten rechts vom am weitesten rechts stehenden Wert
-        if rightmost_col > 0:
-            delete_start = rightmost_col + 1
-            delete_end = sheet.max_column
-            if delete_start <= delete_end:
-                sheet.delete_cols(delete_start, delete_end - delete_start + 1)
-
-        # Überprüfe und entferne leere Spalten
-        col_idx = ord('J') - ord('A')
-        while col_idx < sheet.max_column:
+        for col_idx in range(ord('J') - ord('A'), ord('P') - ord('A')):
             col_letter = chr(ord('A') + col_idx)
-            if all(sheet[f'{col_letter}{row}'].value is None for row in range(27, 64)):
+            if all(sheet[f'{col_letter}{row}'].value is None for row in range(28, 64)):
+                sheet[f'{col_letter}27'].value = None
                 sheet.delete_cols(col_idx + 1)
-            else:
-                col_idx += 1
+                # Verschiebe alle Zellen rechts davon um eine Spalte nach links
+                for row in sheet.iter_rows(min_row=27, max_row=63, min_col=col_idx + 2):
+                    for cell in row:
+                        sheet.cell(row=cell.row, column=cell.column - 1, value=cell.value)
+                sheet.delete_cols(sheet.max_column)
 
     def remove_duplicate_columns(self, sheet):
         values = {}
-        for col in range(6, sheet.max_column + 1):
+        for col in range(1, sheet.max_column + 1):
             value = sheet.cell(row=27, column=col).value
             if value in values:
                 # Lösche die gesamte Spalte des zweiten Wertes

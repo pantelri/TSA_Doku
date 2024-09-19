@@ -5,11 +5,11 @@ from excel_operations.summary_writer import SummaryWriter
 def main():
     data_preparation = DataPreparation()
     data_preparation.load_and_validate_data()
-    data_preparation.print_klassenvariablen()
-    data_preparation.print_dataframe()
+    # data_preparation.print_klassenvariablen()
+    # data_preparation.print_dataframe()
     data_preparation.enrich_dataframe()
-    data_preparation.print_dataframe()
-    data_preparation.print_klassenvariablen()
+    # data_preparation.print_dataframe()
+    # data_preparation.print_klassenvariablen()
 
     excel_writer = ExcelWriter(data_preparation)
     excel_writer.write_to_excel_template()
@@ -21,3 +21,21 @@ def main():
 
 if __name__ == "__main__":
     main()
+
+
+### GOAL MAIN: 
+# data_preparation = DataPreparation()
+# data_preparation.load_and_validate_data()
+# data_preparation.enrich_dataframe()
+
+# excel_writer = ExcelWriter(data_preparation)
+# excel_writer.prepare_workbook()
+
+# tab1 = Summary()
+# tab1.fill_workbook()
+
+# tab2 = Planning()
+# tab2.fill_workbook()
+
+# tab3 = Evaluation()
+# tab3.fill_workbook()
