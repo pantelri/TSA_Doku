@@ -7,6 +7,7 @@ from openpyxl.chart.shapes import GraphicalProperties
 
 class PlanningWriter:
     def __init__(self, workbook_path):
+        self.workbook_path = workbook_path
         self.workbook = openpyxl.load_workbook(workbook_path)
         self.data_validation_sheet = self.workbook['1. Data Validation']
         self.planning_sheet = self.workbook['2.1 SAP Planning']
@@ -56,4 +57,4 @@ class PlanningWriter:
     def process(self):
         self.write_data_to_planning_sheet()
         self.create_column_chart()
-        self.workbook.save(self.workbook.path)
+        self.workbook.save(self.workbook_path)
