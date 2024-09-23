@@ -64,7 +64,4 @@ class DataPreparation(DatenLaden):
             if total_column:
                 self.account_name = total_column.split('_total')[0]
 
-    def write_to_excel_template(self):
-        excel_writer = ExcelWriter(self)
-        excel_writer.write_to_excel_template()
 
