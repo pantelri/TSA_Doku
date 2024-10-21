@@ -11,12 +11,15 @@ def main():
     excel_writer = ExcelWriter(data_preparation)
     excel_writer.prepare_workbook()
 
-    # vermutlich ist bis hier noch alles klar 
     tab1 = Summary(data_preparation)
     tab1.fill_worksheet()
 
     tab2 = Validation(data_preparation)
     tab2.fill_worksheet()
+
+    # Speichern der Arbeitsmappe
+    excel_writer.workbook.save('output.xlsx')
+    print("Excel-Datei wurde erstellt und gespeichert.")
 
     # data_preparation = DataPreparation()
     # data_preparation.load_and_validate_data()
