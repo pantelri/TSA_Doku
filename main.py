@@ -9,25 +9,16 @@ def main():
     data_preparation.enrich_dataframe()
 
     excel_writer = ExcelWriter(data_preparation)
-    excel_writer.prepare_workbook()
 
-    tab1 = Summary(data_preparation)
+    tab1 = Summary(ExcelWriter)
     tab1.fill_worksheet()
 
     tab2 = Validation(data_preparation)
     tab2.fill_worksheet()
 
     # Speichern der Arbeitsmappe
-    excel_writer.workbook.save('output.xlsx')
-    print("Excel-Datei wurde erstellt und gespeichert.")
+    excel_writer.finalize_workbook()
 
-    # data_preparation = DataPreparation()
-    # data_preparation.load_and_validate_data()
-    # # data_preparation.print_klassenvariablen()
-    # # data_preparation.print_dataframe()
-    # data_preparation.enrich_dataframe()
-    # # data_preparation.print_dataframe()
-    # # data_preparation.print_klassenvariablen()
 
     # excel_writer = ExcelWriter(data_preparation)
     # #Todo as of 19.09./14:06

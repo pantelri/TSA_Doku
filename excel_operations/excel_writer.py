@@ -20,12 +20,7 @@ class ExcelWriter:
         output_filename = f"{self.gesellschaft}_{self.account}_{self.jahr}_TSA_Doku.xlsx"
         self.output_path = os.path.join(output_dir, output_filename)
 
-        # Für leichteren Zugriff auf die einzelnen Sheets (=Tabs) in der Zukunft sollen in dieser Klasse alle Tabs leicht einzeln aufrufbar sein.
-        self.workbook = None
-        self.summary_sheet = None
-        self.validation_sheet = None 
-        self.planning_sheet = None
-        self.execution_sheet = None
+        self.prepare_workbook()
 
     def prepare_workbook(self):
         # Kopiere das Template
