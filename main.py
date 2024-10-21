@@ -11,6 +11,7 @@ def main():
     excel_writer = ExcelWriter(data_preparation)
     excel_writer.prepare_workbook()
 
+    # vermutlich ist bis hier noch alles klar 
     tab1 = Summary(data_preparation)
     tab1.fill_worksheet()
 

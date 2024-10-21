@@ -26,7 +26,6 @@ class ExcelWriter:
         self.validation_sheet = None 
         self.planning_sheet = None
         self.execution_sheet = None
-        self.prepare_workbook()
 
     def prepare_workbook(self):
         # Kopiere das Template
