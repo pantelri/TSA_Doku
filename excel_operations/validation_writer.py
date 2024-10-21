@@ -5,6 +5,7 @@ from excel_operations.validation_writer_functions import (
     write_volume_data,
     write_index_data
 )
+from openpyxl.utils import get_column_letter
 
 class Validation():
     def __init__(self, ExcelWriter):
@@ -19,7 +20,16 @@ class Validation():
         write_subtotal_data(self.validation_sheet, self.data, self.account, self.account_name)
         write_volume_data(self.validation_sheet, self.data)
         write_index_data(self.validation_sheet, self.data)
+        self.copy_row_27_to_row_6()
         self.remove_empty_columns()
+
+    def copy_row_27_to_row_6(self):
+        if self.validation_sheet is None:
+            return
+
+        for col in range(7, 27):  # G to Z
+            col_letter = get_column_letter(col)
+            self.validation_sheet[f'{col_letter}6'] = self.validation_sheet[f'{col_letter}27'].value
 
     def remove_empty_columns(self):
         if self.validation_sheet is None:
