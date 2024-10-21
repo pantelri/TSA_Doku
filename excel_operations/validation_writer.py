@@ -5,7 +5,6 @@ from excel_operations.validation_writer_functions import (
     write_volume_data,
     write_index_data
 )
-from openpyxl.styles import PatternFill
 
 class Validation():
     def __init__(self, ExcelWriter):
