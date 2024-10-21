@@ -8,8 +8,8 @@ from excel_operations.validation_writer_functions import (
 )
 
 class Validation(ExcelWriter):
-    def __init__(self):
-        super().__init__()
+    def __init__(self, data_preparation):
+        super().__init__(data_preparation)
 
 # Optionales todo: Eigentlich brauchen wir nicht eine separate Funktion, um alle verschiedenenen Parameter einzeln einzutragen. 
 # Eigentlich können wir aus dem Dataframe auch die "IndexAll" und "IndexE" columns entfernen und den Rest direkt reinschreiben. 
