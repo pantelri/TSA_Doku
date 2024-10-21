@@ -29,8 +29,8 @@ class Validation():
 
         for cell in self.validation_sheet[27]:
             if cell.column_letter not in ['A', 'F'] and cell.value is None:
-                columns_to_delete.append(cell.column_letter)
+                columns_to_delete.append(cell.column)
 
-        for column_letter in reversed(columns_to_delete):
-            self.validation_sheet.delete_cols(self.validation_sheet[column_letter].column)
+        for column_index in reversed(columns_to_delete):
+            self.validation_sheet.delete_cols(column_index)
 
