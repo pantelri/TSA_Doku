@@ -46,25 +46,3 @@ class ExcelWriter:
         # self.remove_duplicate_columns(sheet)
         workbook = self.workbook
         workbook.save(self.output_path)
-
-    def check_and_remove_empty_columns(self, sheet):
-        for col_idx in range(ord('J') - ord('A'), ord('P') - ord('A')):
-            col_letter = chr(ord('A') + col_idx)
-            if all(sheet[f'{col_letter}{row}'].value is None for row in range(28, 64)):
-                sheet[f'{col_letter}27'].value = None
-                sheet.delete_cols(col_idx + 1)
-                # Verschiebe alle Zellen rechts davon um eine Spalte nach links
-                for row in sheet.iter_rows(min_row=27, max_row=63, min_col=col_idx + 2):
-                    for cell in row:
-                        sheet.cell(row=cell.row, column=cell.column - 1, value=cell.value)
-                sheet.delete_cols(sheet.max_column)
-
-    def remove_duplicate_columns(self, sheet):
-        values = {}
-        for col in range(1, sheet.max_column + 1):
-            value = sheet.cell(row=27, column=col).value
-            if value in values:
-                # Lösche die gesamte Spalte des zweiten Wertes
-                sheet.delete_cols(col)
-            else:
-                values[value] = col
