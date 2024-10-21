@@ -12,6 +12,12 @@ class ExcelWriter:
         self.spaltenueberschriften = data_preparation.spaltenueberschriften
         self.data = data_preparation.data
         
+        self.workbook = None
+        self.summary_sheet = None
+        self.validation_sheet = None
+        self.planning_sheet = None
+        self.execution_sheet = None
+
         # Erstelle den Output-Ordner, falls er nicht existiert
         output_dir = os.path.join(os.getcwd(), 'output')
         os.makedirs(output_dir, exist_ok=True)
