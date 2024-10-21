@@ -10,12 +10,19 @@ from excel_operations.validation_writer_functions import (
 class Validation(ExcelWriter):
     def __init__(self, data_preparation):
         super().__init__(data_preparation)
+        self.validation_sheet = None
 
-# Optionales todo: Eigentlich brauchen wir nicht eine separate Funktion, um alle verschiedenenen Parameter einzeln einzutragen. 
-# Eigentlich können wir aus dem Dataframe auch die "IndexAll" und "IndexE" columns entfernen und den Rest direkt reinschreiben. 
     def fill_worksheet(self):
-        write_basic_data(self.validation_sheet,self.data)
-        write_total_data(self.validation_sheet, self.data, self.account)
-        write_subtotal_data(self.validation_sheet, self.data, self.account, self.account_name)
-        write_volume_data(self.validation_sheet, self.data)
-        write_index_data(self.validation_sheet, self.data)
+        if self.workbook is None:
+            self.prepare_workbook()
+        
+        self.validation_sheet = self.workbook.create_sheet("Validation")
+        
+        if self.validation_sheet:
+            write_basic_data(self.validation_sheet, self.data)
+            write_total_data(self.validation_sheet, self.data, self.account)
+            write_subtotal_data(self.validation_sheet, self.data, self.account, self.account_name)
+            write_volume_data(self.validation_sheet, self.data)
+            write_index_data(self.validation_sheet, self.data)
+        else:
+            print("Fehler: Validation-Sheet konnte nicht erstellt werden.")
