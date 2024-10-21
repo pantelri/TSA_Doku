@@ -10,10 +10,10 @@ def main():
 
     excel_writer = ExcelWriter(data_preparation)
 
-    tab1 = Summary(ExcelWriter)
+    tab1 = Summary(excel_writer)
     tab1.fill_worksheet()
 
-    tab2 = Validation(data_preparation)
+    tab2 = Validation(excel_writer)
     tab2.fill_worksheet()
 
     # Speichern der Arbeitsmappe
