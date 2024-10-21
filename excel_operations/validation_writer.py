@@ -6,6 +6,7 @@ from excel_operations.validation_writer_functions import (
     write_index_data
 )
 from openpyxl.utils import get_column_letter
+import statistics
 
 class Validation():
     def __init__(self, ExcelWriter):
@@ -21,6 +22,7 @@ class Validation():
         write_volume_data(self.validation_sheet, self.data)
         write_index_data(self.validation_sheet, self.data)
         self.copy_row_27_to_row_6()
+        self.calculate_and_write_summaries()
         self.remove_empty_columns()
 
     def copy_row_27_to_row_6(self):
@@ -30,6 +32,31 @@ class Validation():
         for col in range(7, 27):  # G to Z
             col_letter = get_column_letter(col)
             self.validation_sheet[f'{col_letter}6'] = self.validation_sheet[f'{col_letter}27'].value
+
+    def calculate_and_write_summaries(self):
+        if self.validation_sheet is None:
+            return
+
+        for col in range(7, 27):  # G to Z
+            col_letter = get_column_letter(col)
+            cell_value = self.validation_sheet[f'{col_letter}6'].value
+            
+            if cell_value is None:
+                continue
+
+            is_price_index = str(cell_value).lower().startswith("price index")
+
+            for row, range_start, range_end in [(7, 28, 39), (11, 40, 51), (15, 52, 63)]:
+                values = [self.validation_sheet[f'{col_letter}{i}'].value for i in range(range_start, range_end + 1)]
+                values = [v for v in values if v is not None and isinstance(v, (int, float))]
+                
+                if values:
+                    if is_price_index:
+                        result = statistics.mean(values)
+                    else:
+                        result = sum(values)
+                    
+                    self.validation_sheet[f'{col_letter}{row}'] = result
 
     def remove_empty_columns(self):
         if self.validation_sheet is None:
