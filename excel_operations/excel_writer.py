@@ -40,9 +40,11 @@ class ExcelWriter:
         self.planning_sheet = self.workbook["2.1 SAP Planning"]
         self.execution_sheet = self.workbook["2.2 SAP Execution"]
 
-    def finalize_workbook(self, workbook, sheet):
-        self.check_and_remove_empty_columns(sheet)
-        self.remove_duplicate_columns(sheet)
+    def finalize_workbook(self):
+        #ToDo: m.E. im Moment nicht gebraucht, vielleicht wieder später aktivieren?
+        # self.check_and_remove_empty_columns(sheet)
+        # self.remove_duplicate_columns(sheet)
+        workbook = self.workbook
         workbook.save(self.output_path)
 
     def check_and_remove_empty_columns(self, sheet):
