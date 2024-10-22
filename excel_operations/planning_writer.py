@@ -2,6 +2,7 @@ from openpyxl_add_ons.related_cells import get_cell_name
 from .planning_writer_functions import create_parameter_plot
 import os
 from openpyxl.drawing.image import Image
+from PIL import Image as PILImage
 
 class Planning():
     def __init__(self, ExcelWriter):
@@ -62,10 +63,30 @@ class Planning():
 
     def insert_param_plot(self, start_cell, param):
         img_path = os.path.join(self.output_dir, f"{param}_plot.png")
-        img = Image(img_path)
+        
+        # Öffne das Bild mit PIL
+        pil_img = PILImage.open(img_path)
+        
+        # Berechne die neuen Dimensionen (70% der ursprünglichen Größe)
+        width, height = pil_img.size
+        new_width = int(width * 0.7)
+        new_height = int(height * 0.7)
+        
+        # Skaliere das Bild
+        pil_img = pil_img.resize((new_width, new_height), PILImage.LANCZOS)
+        
+        # Speichere das skalierte Bild temporär
+        temp_path = os.path.join(self.output_dir, f"{param}_plot_resized.png")
+        pil_img.save(temp_path)
+        
+        # Erstelle ein openpyxl Image-Objekt aus dem skalierten Bild
+        img = Image(temp_path)
         
         # Berechne die Zelle, in die das Bild eingefügt werden soll (8 Zeilen unter start_cell)
         insert_cell = get_cell_name(start_cell, 0, 8)
         
         # Füge das Bild ein
         self.planning_sheet.add_image(img, insert_cell)
+        
+        # Lösche das temporäre skalierte Bild
+        os.remove(temp_path)
