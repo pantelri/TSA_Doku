@@ -71,7 +71,6 @@ class Validation():
 
         for cell in self.validation_sheet[27]:
             wert_darunter = cell_below(self.validation_sheet, cell)
-            print(f"cell{cell} : {wert_darunter}")
             if cell.column_letter not in ['A', 'F'] and cell.value is None:
                 columns_to_delete.append(cell.column)
             elif wert_darunter is not None:
@@ -85,7 +84,6 @@ class Validation():
 
         last_column -= count_correction
 
-        print(f"last col: {last_column}")
         if last_column:
             # Hide the first column after last_column
             col_to_hide = self.validation_sheet.column_dimensions[get_column_letter(last_column + 1)]
