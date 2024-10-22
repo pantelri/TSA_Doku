@@ -69,10 +69,10 @@ class Validation():
         last_column = None
 
         for cell in self.validation_sheet[27]:
-            zelle_darunter = cell_below(self.validation_sheet, cell)
+            wert_darunter = cell_below(self.validation_sheet, cell)
             if cell.column_letter not in ['A', 'F'] and cell.value is None:
                 columns_to_delete.append(cell.column)
-            elif zelle_darunter.value is not None and zelle_darunter.value > 0:
+            elif wert_darunter is not None and float(wert_darunter) > 0:
                 last_column = cell.column
 
         print(last_column)
