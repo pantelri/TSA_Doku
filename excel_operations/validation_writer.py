@@ -4,9 +4,9 @@ from excel_operations.validation_writer_functions import (
     write_subtotal_data,
     write_cos_data,
     write_volume_data,
-    write_index_data,
-    cell_below
+    write_index_data
 )
+from openpyxl_add_ons.related_cells import cell_below
 from openpyxl.utils import get_column_letter
 import statistics
 
@@ -67,20 +67,28 @@ class Validation():
 
         columns_to_delete = []
         last_column = None
+        count_correction = 0 # Last column muss korrigiert werden, um Spalten, die davor sind 
 
         for cell in self.validation_sheet[27]:
             wert_darunter = cell_below(self.validation_sheet, cell)
+            print(f"cell{cell} : {wert_darunter}")
             if cell.column_letter not in ['A', 'F'] and cell.value is None:
                 columns_to_delete.append(cell.column)
             elif wert_darunter is not None:
                 if isinstance(wert_darunter, (int, float)) and wert_darunter > 0:
                     last_column = cell.column
 
-        print(last_column)
+        for column_index in reversed(columns_to_delete):
+            if column_index < last_column:
+                count_correction += 1
+            self.validation_sheet.delete_cols(column_index)
+
+        #Correction of last column 
+        # last_1_cell = sheet.cell(row=1, column=last_column)
+        # last_column = cell_x_right(last_1_cell, count_correction)
+
+        print(f"last col: {last_column}")
         if last_column:
             # Hide the first column after last_column
             col_to_hide = self.validation_sheet.column_dimensions[get_column_letter(last_column + 1)]
             col_to_hide.hidden = True
-
-        for column_index in reversed(columns_to_delete):
-            self.validation_sheet.delete_cols(column_index)
