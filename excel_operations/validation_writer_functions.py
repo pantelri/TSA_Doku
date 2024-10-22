@@ -3,7 +3,7 @@ from openpyxl.utils import get_column_letter
 def cell_below(sheet, cell):
     row_below = cell.row + 1
     cell_below = sheet.cell(row=row_below, column=cell.column)
-    return cell_below
+    return cell_below.value
 
 def write_basic_data(sheet, data):
     for i, row in enumerate(data.itertuples(), start=28):
