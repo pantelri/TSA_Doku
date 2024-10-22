@@ -1,5 +1,10 @@
 from openpyxl.utils import get_column_letter
 
+def cell_below(sheet, cell):
+    row_below = cell.row + 1
+    cell_below = sheet.cell(row=row_below, column=cell.column)
+    return cell_below
+
 def write_basic_data(sheet, data):
     for i, row in enumerate(data.itertuples(), start=28):
         sheet[f'B{i}'] = row.Date
@@ -55,7 +60,7 @@ def write_volume_data(sheet, data):
 def write_index_data(sheet, data):
     index_columns = [col for col in data.columns if 'index_' in col]
     if len(index_columns) > 1:
-        sheet.insert_cols(18, len(index_columns) - 1)
+        sheet.insert_cols(18, len(index_columns) - 2)
         for col_idx in range(18, 18 + len(index_columns) - 1):
             for row in sheet.iter_rows(min_row=1, max_row=sheet.max_row, min_col=col_idx, max_col=col_idx):
                 for cell in row:
