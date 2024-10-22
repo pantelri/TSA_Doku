@@ -25,6 +25,22 @@ def write_subtotal_data(sheet, data, account, account_name):
         for i, value in enumerate(data[col], start=28):
             sheet[f'{cell}{i}'] = value
 
+def write_cos_data(sheet, data):
+    cos_columns = [col for col in data.columns if col.startswith("COS")]
+    if cos_columns:
+        last_subtotal_col = chr(ord('H') + len([col for col in data.columns if "_subtotal" in col]) - 1)
+        start_col = chr(ord(last_subtotal_col) + 1)
+        
+        if len(cos_columns) > 1:
+            sheet.insert_cols(ord(start_col) - ord('A') + 1, len(cos_columns) - 1)
+        
+        for idx, col in enumerate(cos_columns):
+            cell = chr(ord(start_col) + idx)
+            header = col.replace('_', ' ')
+            sheet[f'{cell}27'] = header
+            for i, value in enumerate(data[col], start=28):
+                sheet[f'{cell}{i}'] = value
+
 def write_volume_data(sheet, data):
     volume_columns = [col for col in data.columns if 'Volume' in col]
     if len(volume_columns) > 3:
@@ -38,9 +54,9 @@ def write_volume_data(sheet, data):
 
 def write_index_data(sheet, data):
     index_columns = [col for col in data.columns if 'index_' in col]
-    if len(index_columns) > 2:
+    if len(index_columns) > 1:
         sheet.insert_cols(18, len(index_columns) - 2)
-        for col_idx in range(18, 18 + len(index_columns) - 2):
+        for col_idx in range(18, 18 + len(index_columns) - 1):
             for row in sheet.iter_rows(min_row=1, max_row=sheet.max_row, min_col=col_idx, max_col=col_idx):
                 for cell in row:
                     cell.font = sheet['Q' + str(cell.row)].font.copy()
@@ -48,10 +64,12 @@ def write_index_data(sheet, data):
                     cell.fill = sheet['Q' + str(cell.row)].fill.copy()
                     cell.number_format = sheet['Q' + str(cell.row)].number_format
                     cell.alignment = sheet['Q' + str(cell.row)].alignment.copy()
-        sheet.column_dimensions['S'].width = sheet.column_dimensions['Q'].width
+    
     for idx, col in enumerate(index_columns):
         cell = get_column_letter(17 + idx)  # Q, R, ...
         header = f"price {col.replace('_', ' ')}"
         sheet[f'{cell}27'] = header
         for i, value in enumerate(data[col], start=28):
             sheet[f'{cell}{i}'] = value
+    
+
