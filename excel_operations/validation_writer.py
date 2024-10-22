@@ -1,3 +1,6 @@
+from openpyxl.utils import get_column_letter
+import statistics
+
 from excel_operations.validation_writer_functions import (
     write_basic_data,
     write_total_data,
@@ -7,8 +10,6 @@ from excel_operations.validation_writer_functions import (
     write_index_data
 )
 from openpyxl_add_ons.related_cells import cell_below, get_cell_name, get_cell_value
-from openpyxl.utils import get_column_letter
-import statistics
 
 class Validation():
     def __init__(self, ExcelWriter):

@@ -10,6 +10,7 @@ class ExcelWriter:
         self.jahr = data_preparation.jahr
         self.quartal = data_preparation.quartal
         self.spaltenueberschriften = data_preparation.spaltenueberschriften
+        self.significant_params = data_preparation.significant_params
         self.data = data_preparation.data
         
         self.workbook = None
