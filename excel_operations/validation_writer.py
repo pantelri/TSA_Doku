@@ -68,10 +68,11 @@ class Validation():
         last_column = None
 
         for cell in self.validation_sheet[27]:
-            if cell.column_letter not in ['A', 'F'] and cell.value is None:
-                columns_to_delete.append(cell.column)
-            else: 
+            if cell.value is not None:
                 last_column = cell.column
+
+        if last_column:
+            columns_to_delete = list(range(last_column + 1, last_column + 6))
 
         for column_index in reversed(columns_to_delete):
             self.validation_sheet.delete_cols(column_index)
