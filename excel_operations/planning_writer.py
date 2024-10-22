@@ -37,7 +37,10 @@ class Planning():
             self.planning_sheet[get_cell_name(start_cell, 0, current_row - int(start_cell[1:]))] = f"FY {fiscal_year[-2:]}"
             
             # Schreibe Summe
-            self.planning_sheet[get_cell_name(start_cell, 1, current_row - int(start_cell[1:]))] = value
+            if param.startswith("index_"):
+                self.planning_sheet[get_cell_name(start_cell, 1, current_row - int(start_cell[1:]))] = value / 12
+            else:
+                self.planning_sheet[get_cell_name(start_cell, 1, current_row - int(start_cell[1:]))] = value
             
             # Berechne und schreibe Veränderung zum Vorjahr
             if prev_value is not None:
