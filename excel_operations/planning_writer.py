@@ -1,4 +1,5 @@
 from openpyxl_add_ons.related_cells import get_cell_name
+from .planning_writer_functions import create_parameter_plot
 
 class Planning():
     def __init__(self, ExcelWriter):
@@ -19,6 +20,7 @@ class Planning():
             cell = self.starting_points[i]
             self.planning_sheet[cell] = f"Development of {param}"
             self.fill_param_table(cell, param)
+            self.create_param_plot(param)
 
     def fill_param_table(self, start_cell, param):
         # Gruppiere die Daten nach Fiscal_Year und summiere den Parameter
@@ -51,3 +53,6 @@ class Planning():
             
             prev_value = value
             current_row += 1
+
+    def create_param_plot(self, param):
+        create_parameter_plot(self.data, param, self.output_dir)
