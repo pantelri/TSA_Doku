@@ -4,7 +4,8 @@ from excel_operations.validation_writer_functions import (
     write_subtotal_data,
     write_cos_data,
     write_volume_data,
-    write_index_data
+    write_index_data,
+    cell_below
 )
 from openpyxl.utils import get_column_letter
 import statistics
@@ -68,11 +69,13 @@ class Validation():
         last_column = None
 
         for cell in self.validation_sheet[27]:
+            zelle_darunter = cell_below(self.validation_sheet, cell)
             if cell.column_letter not in ['A', 'F'] and cell.value is None:
                 columns_to_delete.append(cell.column)
-            else: 
+            elif zelle_darunter.value > 0:
                 last_column = cell.column
 
+        print(last_column)
         if last_column:
             # Hide the first column after last_column
             col_to_hide = self.validation_sheet.column_dimensions[get_column_letter(last_column + 1)]
