@@ -12,4 +12,8 @@ class Planning():
         self.starting_points = ["B4", "F4", "B35", "F35"]
 
     def fill_worksheet(self):
-        pass
+        for cell in self.starting_points:
+            for i, param in enumerate(self.significant_params):
+                self.planning_sheet[cell] = f"Development of {param}"
+                if i == len(self.significant_params) - 1:
+                    break
