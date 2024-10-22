@@ -72,8 +72,11 @@ class Validation():
             wert_darunter = cell_below(self.validation_sheet, cell)
             if cell.column_letter not in ['A', 'F'] and cell.value is None:
                 columns_to_delete.append(cell.column)
-            elif wert_darunter is not None and float(wert_darunter) > 0:
-                last_column = cell.column
+            elif wert_darunter is not None:
+                if isinstance(wert_darunter.value, (int, float)) and wert_darunter.value > 0:
+                    last_column = cell.column
+                elif isinstance(wert_darunter.value, str) and wert_darunter.value.strip():
+                    last_column = cell.column
 
         print(last_column)
         if last_column:
