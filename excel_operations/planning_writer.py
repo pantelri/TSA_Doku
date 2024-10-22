@@ -1,5 +1,7 @@
 from openpyxl_add_ons.related_cells import get_cell_name
 from .planning_writer_functions import create_parameter_plot
+import os
+from openpyxl.drawing.image import Image
 
 class Planning():
     def __init__(self, ExcelWriter):
@@ -21,6 +23,7 @@ class Planning():
             self.planning_sheet[cell] = f"Development of {param}"
             self.fill_param_table(cell, param)
             self.create_param_plot(param)
+            self.insert_param_plot(cell, param)
 
     def fill_param_table(self, start_cell, param):
         # Gruppiere die Daten nach Fiscal_Year und summiere den Parameter
@@ -56,3 +59,13 @@ class Planning():
 
     def create_param_plot(self, param):
         create_parameter_plot(self.data, param, self.output_dir)
+
+    def insert_param_plot(self, start_cell, param):
+        img_path = os.path.join(self.output_dir, f"{param}_plot.png")
+        img = Image(img_path)
+        
+        # Berechne die Zelle, in die das Bild eingefügt werden soll (8 Zeilen unter start_cell)
+        insert_cell = get_cell_name(start_cell, 0, 8)
+        
+        # Füge das Bild ein
+        self.planning_sheet.add_image(img, insert_cell)
