@@ -88,5 +88,5 @@ class Planning():
         # Füge das Bild ein
         self.planning_sheet.add_image(img, insert_cell)
         
-        # Lösche das temporäre skalierte Bild
-        os.remove(temp_path)
+        # Schließe das PIL Image-Objekt
+        pil_img.close()
