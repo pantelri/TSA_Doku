@@ -4,6 +4,7 @@ class Planning():
     def __init__(self, ExcelWriter):
 
         self.planning_sheet = ExcelWriter.planning_sheet
+        self.output_dir = ExcelWriter.output_dir
 
         self.account = ExcelWriter.account
         self.account_name = ExcelWriter.account_name
@@ -36,7 +37,7 @@ class Planning():
             # Schreibe Fiscal Year
             self.planning_sheet[get_cell_name(start_cell, 0, current_row - int(start_cell[1:]))] = f"FY {fiscal_year[-2:]}"
             
-            # Schreibe Summe
+            # Schreibe Summe oder Durchschnitt
             if param.startswith("index_"):
                 self.planning_sheet[get_cell_name(start_cell, 1, current_row - int(start_cell[1:]))] = value / 12
             else:
