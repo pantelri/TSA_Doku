@@ -6,7 +6,7 @@ from excel_operations.validation_writer_functions import (
     write_volume_data,
     write_index_data
 )
-from openpyxl_add_ons.related_cells import cell_below
+from openpyxl_add_ons.related_cells import cell_below, get_cell_name, get_cell_value
 from openpyxl.utils import get_column_letter
 import statistics
 
@@ -83,9 +83,7 @@ class Validation():
                 count_correction += 1
             self.validation_sheet.delete_cols(column_index)
 
-        #Correction of last column 
-        # last_1_cell = sheet.cell(row=1, column=last_column)
-        # last_column = cell_x_right(last_1_cell, count_correction)
+        last_column -= count_correction
 
         print(f"last col: {last_column}")
         if last_column:
