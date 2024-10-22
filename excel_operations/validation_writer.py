@@ -73,11 +73,10 @@ class Validation():
             else: 
                 last_column = cell.column
 
-        for column_index in reversed(columns_to_delete):
-            self.validation_sheet.delete_cols(column_index)
-
         if last_column:
             # Hide the first column after last_column
             col_to_hide = self.validation_sheet.column_dimensions[get_column_letter(last_column + 1)]
             col_to_hide.hidden = True
 
+        for column_index in reversed(columns_to_delete):
+            self.validation_sheet.delete_cols(column_index)
