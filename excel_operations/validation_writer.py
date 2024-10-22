@@ -2,6 +2,7 @@ from excel_operations.validation_writer_functions import (
     write_basic_data,
     write_total_data,
     write_subtotal_data,
+    write_cos_data,
     write_volume_data,
     write_index_data
 )
@@ -19,6 +20,7 @@ class Validation():
         write_basic_data(self.validation_sheet, self.data)
         write_total_data(self.validation_sheet, self.data, self.account)
         write_subtotal_data(self.validation_sheet, self.data, self.account, self.account_name)
+        write_cos_data(self.validation_sheet, self.data)
         write_volume_data(self.validation_sheet, self.data)
         write_index_data(self.validation_sheet, self.data)
         self.copy_row_27_to_row_6()
