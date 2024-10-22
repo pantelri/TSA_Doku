@@ -20,12 +20,12 @@ class ExcelWriter:
         self.execution_sheet = None
 
         # Erstelle den Output-Ordner, falls er nicht existiert
-        output_dir = os.path.join(os.getcwd(), 'output')
-        os.makedirs(output_dir, exist_ok=True)
+        self.output_dir = os.path.join(os.getcwd(), 'output')
+        os.makedirs(self.output_dir, exist_ok=True)
         
         # Setze den output_path als Klassenvariable
         output_filename = f"{self.gesellschaft}_{self.account}_{self.jahr}_TSA_Doku.xlsx"
-        self.output_path = os.path.join(output_dir, output_filename)
+        self.output_path = os.path.join(self.output_dir, output_filename)
 
         self.prepare_workbook()
 
