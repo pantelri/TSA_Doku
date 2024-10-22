@@ -2,11 +2,14 @@ import pandas as pd
 from datetime import datetime
 
 from data_processing.loaders import DatenLaden
+from preparation_functions import det_signif_headers
 
 class DataPreparation(DatenLaden):
     def __init__(self):
         super().__init__()  # Initialisiere die Superklasse, um Zugriff auf deren Variablen zu erhalten
         self.account_name = None
+        #toDO
+        self.significant_params = det_signif_headers(self.spaltenueberschriften)
 
     def enrich_dataframe(self):
         # Anreichern des DataFrames mit zusätzlichen Informationen
