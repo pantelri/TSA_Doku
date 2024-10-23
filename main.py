@@ -25,27 +25,3 @@ def main():
 
 if __name__ == "__main__":
     main()
-
-
-### GOAL MAIN: 
-# data_preparation = DataPreparation()
-# data_preparation.load_and_validate_data()
-# data_preparation.enrich_dataframe()
-
-# excel_writer = ExcelWriter(data_preparation)
-# excel_writer.prepare_workbook()
-
-# tab1 = Summary()
-# tab1.fill_worksheet()
-
-# tab2 = Validation()
-# tab2.fill_worksheet()
-
-# tab3 = Planning()
-# tab3.fill_worksheet()
-
-#todo: --> 
-# tab3 = Evaluation()
-# tab3.fill_worksheet()
-
-# excel_writer.finalize_workbook()
