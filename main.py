@@ -20,7 +20,6 @@ def main():
     tab3 = Planning(excel_writer)
     tab3.fill_worksheet()
 
-    # Speichern der Arbeitsmappe
     excel_writer.finalize_workbook()
 
 if __name__ == "__main__":
